@@ -1,22 +1,39 @@
+const movieRoutes = require("./routes/movieRoutes")
+require("dotenv").config();
 const express = require("express");
-const app=express();
+const connectDB = require("./config/db");
+const app = express();
 
-const PORT=5000;
+app.use(express.json());
 
-app.get("/",(req,res) =>{
+const PORT = 5000;
+
+app.get("/", (req, res) => {
     res.send("Movie Booking API is running");
 
 });
 
-app.listen(PORT,()=>{
-    console.log(`Server running on http://localhost:${PORT}`);
-})
 
-app.get("/api/health",(req,res)=>{
+
+app.get("/api/health", (req, res) => {
     res.json(
         {
-            status:"OK",
-            message:"Movie Booking API is healthy"
+            status: "OK",
+            message: "Movie Booking API is healthy"
         }
     );
 });
+
+app.use("/api/movies", movieRoutes)
+
+const startServer = async () => {
+    await connectDB();
+
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
+};
+
+startServer();
