@@ -2,7 +2,10 @@ const movieRoutes = require("./routes/movieRoutes")
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
 const app = express();
+
+app.use("/api/auth", authRoutes);
 
 app.use(express.json());
 
