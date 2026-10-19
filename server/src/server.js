@@ -4,6 +4,10 @@ const express = require("express");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const app = express();
+const cors = require("cors");
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
 
 app.use("/api/auth", authRoutes);
 

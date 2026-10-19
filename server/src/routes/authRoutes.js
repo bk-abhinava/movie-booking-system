@@ -3,6 +3,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const User = require("../models/User");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -94,5 +95,39 @@ router.post("/google", async (req, res) => {
         });
     }
 });
+
+
+router.get("/me", protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+            .select("-__v");
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "User account not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error("Get current user error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to retrieve current user"
+        });
+    }
+});
+
 
 module.exports = router;
