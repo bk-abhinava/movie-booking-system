@@ -1,4 +1,4 @@
-
+import MovieDashboard from "./components/MovieDashboard";
 import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import "./App.css";
@@ -64,47 +64,14 @@ setUser({
     }
   }
 
-  if (user) {
-    return (
-      <main className="page-shell">
-        <section className="login-card success-card">
-          <div className="success-icon">✓</div>
-          <p className="eyebrow">AUTHENTICATION SUCCESSFUL</p>
-          <h1>Welcome, {user.name}</h1>
-          <p className="subtitle">
-            You're signed in to MovieBook.
-          </p>
-
-          {user.avatar && (
-            <img
-              className="user-avatar"
-              src={user.avatar}
-              alt=""
-              referrerPolicy="no-referrer"
-            />
-          )}
-
-          <div className="user-details">
-            <span>Email</span>
-            <strong>{user.email}</strong>
-            <span>Account type</span>
-            <strong>{user.role}</strong>
-          </div>
-
-          <button
-            className="secondary-button"
-            onClick={() => setUser(null)}
-          >
-            Sign out of this demo
-          </button>
-          <p className="footnote">
-            This demo sign-out clears the page state only.
-            Full session revocation will be implemented later.
-          </p>
-        </section>
-      </main>
-    );
-  }
+if (user) {
+  return (
+    <MovieDashboard
+      user={user}
+      onLogout={() => setUser(null)}
+    />
+  );
+}
 
   return (
     <main className="page-shell">
